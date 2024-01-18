@@ -16,7 +16,7 @@ public class ScoreController : MonoBehaviour
 
     private void Start()
     {
-        SetMaxScore(1);
+        CurrentScoreTMP.text = currentScore.ToString();
     }
     public void AddPoint()
     {

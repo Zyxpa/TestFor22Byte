@@ -15,11 +15,16 @@ public class TractorController : MonoBehaviour
 
     private Vector3 direction = Vector3.right;
     private Vector3 newDirection = Vector3.right;
-    const float EpsForEqualing = 1.3005f;
+    const float EpsForEqualing = 1.3503f;
 
     private void Awake()
     {
         inputController.swipeAction.AddListener(ChangeDirection);
+    }
+
+    private void OnEnable()
+    {
+        direction = Vector3.right;
     }
     private void FixedUpdate()
     {
@@ -27,6 +32,7 @@ public class TractorController : MonoBehaviour
         characterController.Move(direction * speed*Time.fixedDeltaTime);
     }
 
+    //ToDo
     private void Rotation() 
     { 
 
@@ -78,5 +84,10 @@ public class TractorController : MonoBehaviour
             newDirection = Vector3.forward;
         else
             newDirection = Vector3.back;
+    }
+
+    public void SetMap(Tilemap tilemap)
+    {
+        map = tilemap;
     }
 }

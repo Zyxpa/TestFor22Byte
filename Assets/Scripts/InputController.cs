@@ -39,7 +39,7 @@ public class InputController : MonoBehaviour
             return;
         
         swipe = swipe.normalized;
-        
+        //Debug.Log(directions.MaxBy(x => Vector2.Dot(swipe, x)));
         swipeAction.Invoke(directions.MaxBy(x => Vector2.Dot(swipe, x)));
 
     }

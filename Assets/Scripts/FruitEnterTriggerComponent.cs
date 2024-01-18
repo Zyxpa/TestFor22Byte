@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class FruitEnterTriggerComponent : MonoBehaviour
 {
     [SerializeField] FruitController fuit;
-    [SerializeField] FruitEnterEvent action;
+    public FruitEnterEvent action;
     virtual protected void OnTriggerEnter(Collider other)
     {
         action?.Invoke(fuit);
