@@ -1,90 +1,96 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Tilemaps;
-using UnityEngine.Video;
-using static UnityEditor.Progress;
 
 public class LevelController : MonoBehaviour
 {
-    [SerializeField] private string curentLevelName;
+    //[SerializeField] private string curentLevelName;
     [SerializeField] Tilemap blockTilemap;
     [SerializeField] Tilemap appleTilemap;
-    [SerializeField] Transform tractorPos;
-    [SerializeField] GameObject blockPrefub;
-    [SerializeField] FruitEnterTriggerComponent applePrefub;
-    [SerializeField] TractorController tractorPrefub;
+    [SerializeField] Tilemap tractorPos;
+    [SerializeField] LevelDescription level;
 
+    List<GameObject> blocks = new List<GameObject>();
     List<FruitEnterTriggerComponent> fruitEnterTriggerComponents = new List<FruitEnterTriggerComponent>();
     TractorController tractor;
-    LevelDescription level;
-    [ContextMenu("Save")]
-    public void SaveLevel()
+
+    [ContextMenu("SaveAsset")]
+    public void SaveAsset()
     {
-        LevelDescription level = new LevelDescription();
-
-        var val = blockTilemap.GetComponentsInChildren<MeshRenderer>().ToList();
-
-        foreach ( var t in val)
-        {
-            var v = new TileObj(t.gameObject.transform.position);
-            level.blocktTiles.Add(v);
-        }
-
-        val = appleTilemap.GetComponentsInChildren<MeshRenderer>().ToList();
-        foreach (var t in val)
-        {
-            var v = new TileObj(t.gameObject.transform.position);
-            level.appleTiles.Add(v);
-        }
-        level.tractorPos = new TileObj(tractorPos.position); ;
-        SaveLoadJSON.Save(level, curentLevelName + ".json");
+        GetObjectFromTilemap<MeshRenderer>(blockTilemap, ref level.blocktTiles);
+        GetObjectFromTilemap<MeshRenderer>(appleTilemap, ref level.appleTiles);
+        GetObjectFromTilemap<TractorController>(tractorPos, ref level.tractorPos);
     }
-    [ContextMenu("Load")]
-    public LevelDescription LoadLevel()
+    private void GetObjectFromTilemap<T>(Tilemap tilemap, ref List<TileObj> result) where T : Component
     {
-        level = SaveLoadJSON.Load<LevelDescription>(curentLevelName + ".json");
+        var objects = tilemap.GetComponentsInChildren<T>().ToList();
 
+        foreach (var t in objects)
+        {
+            var v = new TileObj(t.gameObject.transform.position);
+            result.Add(v);
+        }
+    }
+
+    public async Task<LevelDescription> LoadLevelAsync(string levelName)
+    {
+        level = await Addressables.LoadAssetAsync<LevelDescription>(levelName).Task;
         foreach (var t in level.blocktTiles)
-            Instantiate(blockPrefub, t.position, new Quaternion(), blockTilemap.transform);
+            blocks.Add(Instantiate(level.blockPrefub, t.position, new Quaternion(), blockTilemap.transform));
         foreach (var t in level.appleTiles)
-            fruitEnterTriggerComponents.Add(Instantiate(applePrefub, t.position, new Quaternion(), appleTilemap.transform));
-        tractor = Instantiate<TractorController>(tractorPrefub, level.tractorPos.position, Quaternion.Euler(new Vector3(0, 90, 0)), appleTilemap.transform);
+            fruitEnterTriggerComponents.Add(Instantiate(level.applePrefub, t.position, new Quaternion(), appleTilemap.transform));
+        foreach (var t in level.tractorPos)
+            tractor = Instantiate(level.tractorPrefub, t.position, Quaternion.Euler(new Vector3(0, 90, 0)), appleTilemap.transform);
+
         tractor.SetMap(blockTilemap);
         return level;
     }
 
+    [ContextMenu("Load")]
+    public async void LoadLevelAsync2()
+    {
+        await LoadLevelAsync("LevelDescription");
+    }
     public void Clear()
     {
         Destroy(tractor.gameObject);
         foreach (var t in fruitEnterTriggerComponents)
             Destroy(t.gameObject);
         fruitEnterTriggerComponents.Clear();
+        foreach (var t in blocks)
+            Destroy(t.gameObject);
+        blocks.Clear();
     }
 
-    public void ReloadLevel()
+#if UNITY_EDITOR
+    [ContextMenu("Clear")]
+    public void ClearOnEditor()
+    {
+        var val = blockTilemap.GetComponentsInChildren<MeshRenderer>().ToList();
+        foreach (var t in val)
+            DestroyImmediate(t.gameObject);
+        val = appleTilemap.GetComponentsInChildren<MeshRenderer>().ToList();
+        foreach(var t in val)
+            DestroyImmediate(t.gameObject);
+    }
+#endif
+    public void ReloadLevel(LevelDescription loadedLevel)
     {
         tractor.gameObject.SetActive(false);
-        tractor.gameObject.transform.position = level.tractorPos.position;
-        tractor.gameObject.SetActive(true);
-
+        tractor.gameObject.transform.position = level.tractorPos[0].position;
         tractor.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+
         foreach (var t in fruitEnterTriggerComponents)
             t.gameObject.SetActive(true);
+
+        tractor.gameObject.SetActive(true);
     }
     internal List<FruitEnterTriggerComponent> GetFruits()
     {
         return fruitEnterTriggerComponents;
     }
-}
-
-[Serializable]
-public class LevelDescription
-{
-    public List<TileObj> blocktTiles = new List<TileObj>();
-    public List<TileObj> appleTiles = new List<TileObj>();
-    public TileObj tractorPos;
-    public int CountOfFruits => appleTiles.Count;
 }

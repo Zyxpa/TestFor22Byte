@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 409810fc80ecd6a46b2743af363587cc, type: 3}
+  m_Name: Level2
+  m_EditorClassIdentifier: 
+  Name: lvl2
+  Reward: 150
+  Time: 60
+  blocktTiles:
+  - position: {x: -1.5999999, y: 0, z: 1.55}
+  - position: {x: -1.5999999, y: 0, z: 0.5}
+  - position: {x: -1.5999999, y: 0, z: -0.54999995}
+  - position: {x: -1.5999999, y: 0, z: -1.5999999}
+  - position: {x: -1.5999999, y: 0, z: -2.6499999}
+  - position: {x: -0.54999995, y: 0, z: -2.6499999}
+  - position: {x: 0.5, y: 0, z: -2.6499999}
+  - position: {x: 1.55, y: 0, z: -2.6499999}
+  - position: {x: 1.55, y: 0, z: -3.6999998}
+  - position: {x: 2.6, y: 0, z: -3.6999998}
+  - position: {x: 3.6499999, y: 0, z: -3.6999998}
+  - position: {x: -0.54999995, y: 0, z: 1.55}
+  - position: {x: 0.5, y: 0, z: 1.55}
+  - position: {x: 1.55, y: 0, z: 1.55}
+  - position: {x: 2.6, y: 0, z: 1.55}
+  - position: {x: 3.6499999, y: 0, z: 1.55}
+  - position: {x: 4.7, y: 0, z: 1.55}
+  - position: {x: 2.6, y: 0, z: -2.6499999}
+  - position: {x: 3.6499999, y: 0, z: -1.5999999}
+  - position: {x: 4.7, y: 0, z: -1.5999999}
+  - position: {x: 3.6499999, y: 0, z: -2.6499999}
+  - position: {x: 4.7, y: 0, z: -0.54999995}
+  - position: {x: 3.6499999, y: 0, z: -0.54999995}
+  - position: {x: 2.6, y: 0, z: -0.54999995}
+  - position: {x: 4.7, y: 0, z: 0.5}
+  - position: {x: 3.6499999, y: 0, z: 0.5}
+  - position: {x: 2.6, y: 0, z: 0.5}
+  - position: {x: 1.55, y: 0, z: 0.5}
+  - position: {x: 0.5, y: 0, z: 0.5}
+  - position: {x: -0.54999995, y: 0, z: 0.5}
+  - position: {x: -0.54999995, y: 0, z: -0.54999995}
+  - position: {x: -0.54999995, y: 0, z: -1.5999999}
+  - position: {x: 0.5, y: 0, z: -0.54999995}
+  - position: {x: 1.55, y: 0, z: -0.54999995}
+  - position: {x: 2.6, y: 0, z: -1.5999999}
+  - position: {x: 1.55, y: 0, z: -1.5999999}
+  - position: {x: 0.5, y: 0, z: -1.5999999}
+  - position: {x: -0.54999995, y: 0, z: -5.7999997}
+  - position: {x: -0.54999995, y: 0, z: -6.8499994}
+  - position: {x: 0.5, y: 0, z: -6.8499994}
+  - position: {x: 1.55, y: 0, z: -6.8499994}
+  - position: {x: 2.6, y: 0, z: -6.8499994}
+  - position: {x: 2.6, y: 0, z: -8.95}
+  - position: {x: 1.55, y: 0, z: -8.95}
+  - position: {x: 0.5, y: 0, z: -8.95}
+  - position: {x: -0.54999995, y: 0, z: -8.95}
+  - position: {x: -0.54999995, y: 0, z: -7.8999996}
+  - position: {x: 3.6499999, y: 0, z: -5.7999997}
+  - position: {x: 3.6499999, y: 0, z: -4.75}
+  - position: {x: 2.6, y: 0, z: -5.7999997}
+  - position: {x: 2.6, y: 0, z: -7.8999996}
+  - position: {x: 2.6, y: 0, z: -4.75}
+  - position: {x: 1.55, y: 0, z: -4.75}
+  - position: {x: 1.55, y: 0, z: -5.7999997}
+  - position: {x: 1.55, y: 0, z: -7.8999996}
+  - position: {x: 0.5, y: 0, z: -7.8999996}
+  - position: {x: 0.5, y: 0, z: -5.7999997}
+  - position: {x: 0.5, y: 0, z: -4.75}
+  - position: {x: 0.5, y: 0, z: -3.6999998}
+  - position: {x: -0.54999995, y: 0, z: -4.75}
+  - position: {x: -0.54999995, y: 0, z: -3.6999998}
+  appleTiles:
+  - position: {x: 2.6, y: 1.25, z: -2.6499999}
+  - position: {x: 0.5, y: 1.25, z: -4.75}
+  - position: {x: 2.6, y: 1.25, z: -7.8999996}
+  - position: {x: 0.5, y: 1.25, z: 0.5}
+  - position: {x: -0.54999995, y: 1.25, z: 0.5}
+  - position: {x: 0.5, y: 1.25, z: -8.95}
+  tractorPos:
+  - position: {x: -0.54999995, y: 1.3, z: -8.95}
+  blockPrefub: {fileID: 5734872074553867977, guid: 664d8093bb719d64aba527e00f9d1e39, type: 3}
+  applePrefub: {fileID: 1821094525783877034, guid: 48b6f97a4333e3341b0aed0375869ef8, type: 3}
+  tractorPrefub: {fileID: 3406100490430511537, guid: 00ac2cd0f6208034da9f7310feb1ff25, type: 3}

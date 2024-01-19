@@ -30,6 +30,8 @@ public class ScoreController : MonoBehaviour
     {
         maxScore = MaxScore;
         MaxScoreTMP.text = maxScore.ToString();
+        currentScore = 0;
+        CurrentScoreTMP.text = currentScore.ToString();
     }
 
 

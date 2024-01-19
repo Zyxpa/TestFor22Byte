@@ -4,47 +4,56 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] PanelController WinPanel;
-    [SerializeField] PanelController LosePanel;
-    [SerializeField] PanelController GamePanel;
+    [SerializeField] GamePanelController GamePanel;
+    [SerializeField] PanelController MenuPanel;
+    [SerializeField] LevelController levelController;
     [SerializeField] List<LevelButton> levelButtons;
-    [SerializeField] BasketsController basketsController;
-    [SerializeField] ScoreController scoreController;
 
-    private LevelController loadedLevel;
+    private LevelDescription loadedLevel;
+    private PlayerData playerData = new PlayerData();
     private void Awake()
     {
+        MenuPanel.Show();
         foreach (var levelButton in levelButtons)
-            levelButton.onClick.AddListener(delegate { LoadLevel(levelButton.LevelController); });
+            levelButton.onClick.AddListener(delegate { LoadLevel(levelButton.LevelDescriptionName, levelButton.Price); });
     }
 
     public void Win()
     {
         Debug.Log("You Win!!");
         Time.timeScale = 0;
-        WinPanel.Show();
+        GamePanel.WinPanel.Show();
+        playerData.CountOfCoin += loadedLevel.Reward;
     }
 
     public void Lose()
     {
         Debug.Log("You Lose!!");
         Time.timeScale = 0;
-        LosePanel.Show();
+        GamePanel.LosePanel.Show();
     }
 
-    public void LoadLevel(LevelController levelController)
+    public async void LoadLevel(string levelName, int price)
     {
-        loadedLevel = levelController;
-        GamePanel.Show();
-        var LevelDes = levelController.LoadLevel();
-        scoreController.SetMaxScore(LevelDes.CountOfFruits);
-        basketsController.AddListenerOnFruit(levelController.GetFruits());
+        if (price != null && price > playerData.CountOfCoin)
+            return;
+        MenuPanel.Hide();
+        playerData.CountOfCoin -= price;
+        loadedLevel = await levelController.LoadLevelAsync(levelName);
+        GamePanel.OnLoadLevel(loadedLevel, levelController.GetFruits());
     }
 
     public void RestartLevel()
     {
-        loadedLevel.ReloadLevel();
-        LosePanel.Hide();
+        levelController.ReloadLevel(loadedLevel);
+        GamePanel.RestartLevel(loadedLevel);
+        Time.timeScale = 1;
+    }
+    public void GoOnMainMenu()
+    {
+        GamePanel.QuitLevel();
+        MenuPanel.Show();
+        levelController.Clear();
         Time.timeScale = 1;
     }
 }

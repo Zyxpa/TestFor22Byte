@@ -15,7 +15,7 @@ public class TractorController : MonoBehaviour
 
     private Vector3 direction = Vector3.right;
     private Vector3 newDirection = Vector3.right;
-    const float EpsForEqualing = 1.3503f;
+    const float EpsForEqualing = 1.3015f;
 
     private void Awake()
     {
@@ -25,43 +25,24 @@ public class TractorController : MonoBehaviour
     private void OnEnable()
     {
         direction = Vector3.right;
+        newDirection = Vector3.right;
     }
     private void FixedUpdate()
     {
         if (InCenterOfTile() && direction != newDirection) Rotation();
         characterController.Move(direction * speed*Time.fixedDeltaTime);
     }
-
-    //ToDo
     private void Rotation() 
-    { 
-
-        if (direction + newDirection == Vector3.zero)
+    {
+        var CrossProduct = Vector3.Cross(direction, newDirection);
+        if(CrossProduct == Vector3.zero)
             gameObject.transform.rotation *= Quaternion.Euler(new Vector3(0, 180, 0));
+        else
+        if (CrossProduct == Vector3.up)
+            gameObject.transform.localRotation *= Quaternion.Euler(new Vector3(0, 90, 0));
+        else
+            gameObject.transform.localRotation *= Quaternion.Euler(new Vector3(0, -90, 0));
 
-        if (direction == Vector3.right)
-            if(newDirection == Vector3.forward)
-                gameObject.transform.localRotation *= Quaternion.Euler(new Vector3(0, -90, 0));
-            else
-                gameObject.transform.localRotation *= Quaternion.Euler(new Vector3(0, 90, 0));
-
-        if(direction == Vector3.forward)
-            if (newDirection == Vector3.left)
-            gameObject.transform.rotation *= Quaternion.Euler(new Vector3(0, -90, 0));
-            else
-            gameObject.transform.rotation *= Quaternion.Euler(new Vector3(0, 90, 0));
-
-        if (direction == Vector3.left)
-            if (newDirection == Vector3.back)
-                gameObject.transform.rotation *= Quaternion.Euler(new Vector3(0, -90, 0));
-            else
-                gameObject.transform.rotation *= Quaternion.Euler(new Vector3(0, 90, 0));
-
-        if (direction == Vector3.back)
-            if (newDirection == Vector3.right)
-                gameObject.transform.rotation *= Quaternion.Euler(new Vector3(0, -90, 0));
-            else
-                gameObject.transform.rotation *= Quaternion.Euler(new Vector3(0, 90, 0));
         direction = newDirection;
     }
 

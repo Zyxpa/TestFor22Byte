@@ -124,7 +124,7 @@ MonoBehaviour:
   characterController: {fileID: 1472844383395827621}
   inputController: {fileID: 1857041487006252062}
   map: {fileID: 0}
-  speed: 3
+  speed: 4
 --- !u!114 &1857041487006252062
 MonoBehaviour:
   m_ObjectHideFlags: 0
